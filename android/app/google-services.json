@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "299002982244",
+    "firebase_url": "https://special-notes-5be1f.firebaseio.com",
+    "project_id": "special-notes-5be1f",
+    "storage_bucket": "special-notes-5be1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299002982244:android:774a1ecc7bc987c8d65471",
+        "android_client_info": {
+          "package_name": "com.Debanshu777.chat_app_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299002982244-0ic0751f2u6mgj8jusa03m698m9mgpnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_gdYRv6slSNpI0eThZNUECo54PacARCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299002982244-0ic0751f2u6mgj8jusa03m698m9mgpnk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "299002982244-6paku8bpsbbafv8ltf8ufbf3radit2ur.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.specialNotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
