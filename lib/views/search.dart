@@ -1,4 +1,6 @@
+import 'package:chat_app_flutter/helper/constants.dart';
 import 'package:chat_app_flutter/services/database.dart';
+import 'package:chat_app_flutter/views/conversationScreen.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +26,60 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  createChatroomAndStartConversation(String username) {
+    if (username != Constants.myName) {
+      String chatroomId = getChatRoomId(username, Constants.myName);
+      List<String> users = [username, Constants.myName];
+      Map<String, dynamic> chatroomMap = {
+        "users": users,
+        "chatroomId": chatroomId,
+      };
+      databaseMethods.createChatRoom(chatroomId, chatroomMap);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ConversationScreen()));
+    } else {
+      print("You can't send message to yourself");
+    }
+  }
+
+  Widget SearchTile({String userName, String userEmail}) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: mediumTextStyle(),
+              ),
+              Text(
+                userEmail,
+                style: mediumTextStyle(),
+              )
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () {
+              createChatroomAndStartConversation(userName);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Text(
+                "Message",
+                style: simpleTextStyle(),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget searchList() {
     return searchSnapshort != null
         ? ListView.builder(
@@ -43,6 +99,14 @@ class _SearchScreenState extends State<SearchScreen> {
   //   List<String> users=[userName,myName];
   //   databaseMethods.createChatRoom(charRoomId, chatroomMap)
   // }
+
+  getChatRoomId(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
 
   @override
   void initState() {
@@ -101,48 +165,6 @@ class _SearchScreenState extends State<SearchScreen> {
             searchList(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SearchTile extends StatelessWidget {
-  final String userName;
-  final String userEmail;
-  SearchTile({this.userName, this.userEmail});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: mediumTextStyle(),
-              ),
-              Text(
-                userEmail,
-                style: mediumTextStyle(),
-              )
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Text(
-                "Message",
-                style: simpleTextStyle(),
-              ),
-            ),
-          )
-        ],
       ),
     );
   }
