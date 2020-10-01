@@ -35,8 +35,10 @@ class _SearchScreenState extends State<SearchScreen> {
         "chatroomId": chatroomId,
       };
       databaseMethods.createChatRoom(chatroomId, chatroomMap);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ConversationScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatroomId)));
     } else {
       print("You can't send message to yourself");
     }
@@ -93,12 +95,6 @@ class _SearchScreenState extends State<SearchScreen> {
             })
         : Container();
   }
-
-  // create  a chatRoom ,send user to conversation screen
-  // createChatroomAndStartCoversation(String userName) {
-  //   List<String> users=[userName,myName];
-  //   databaseMethods.createChatRoom(charRoomId, chatroomMap)
-  // }
 
   getChatRoomId(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {

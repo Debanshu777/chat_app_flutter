@@ -17,7 +17,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool userIsLoggedIn = false;
+  bool userIsLoggedIn;
+
   @override
   void initState() {
     getLoggedInState();
@@ -35,15 +36,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'FlutterChat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xff145C9E),
         scaffoldBackgroundColor: Color(0xff1F1F1F),
-        primarySwatch: Colors.blue,
+        accentColor: Color(0xff007EF4),
+        fontFamily: "OverpassRegular",
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: userIsLoggedIn ? ChatRooms() : Authenticate(),
+      home: userIsLoggedIn != null
+          ? userIsLoggedIn ? ChatRooms() : Authenticate()
+          : Container(
+              child: Center(
+                child: Authenticate(),
+              ),
+            ),
     );
   }
 }
