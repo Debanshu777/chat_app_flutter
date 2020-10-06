@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:chat_app_flutter/helper/constants.dart';
 import 'package:chat_app_flutter/services/database.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ConversationScreen extends StatefulWidget {
@@ -13,6 +16,7 @@ class ConversationScreen extends StatefulWidget {
 
 class _ConversationScreenState extends State<ConversationScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
+  ScrollController _controller = ScrollController();
   TextEditingController messageTextEditingController =
       new TextEditingController();
   Stream<QuerySnapshot> chatMessageStream;
@@ -22,6 +26,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+                controller: _controller,
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   return MessageTile(
@@ -64,20 +70,34 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children: [
-            ChatMessageList(),
+            Container(
+              child: ChatMessageList(),
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 60),
+            ),
             Container(
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
               child: Container(
-                color: Color(0x54FFFFFF),
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                decoration: BoxDecoration(
+                    color: Color(0x20FFFFFF),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    )),
                 child: Row(
                   children: [
                     Expanded(
                       child: TextField(
+                        onTap: () {
+                          Timer(
+                              Duration(milliseconds: 300),
+                              () => _controller.jumpTo(
+                                  _controller.position.maxScrollExtent));
+                        },
                         controller: messageTextEditingController,
                         style: TextStyle(
-                          color: Colors.white54,
+                          color: Colors.white70,
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -91,6 +111,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     GestureDetector(
                       onTap: () {
                         sendMessage();
+                        Timer(
+                            Duration(milliseconds: 500),
+                            () => _controller
+                                .jumpTo(_controller.position.maxScrollExtent));
                       },
                       child: Container(
                         height: 40,
@@ -100,7 +124,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                             const Color(0x36FFFFFF),
                             const Color(0x0FFFFFFF)
                           ]),
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         padding: EdgeInsets.all(12),
                         child: Image.asset("assets/images/send.png"),
@@ -133,18 +157,18 @@ class MessageTile extends StatelessWidget {
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin:
-            isSendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+            isSendByMe ? EdgeInsets.only(left: 20) : EdgeInsets.only(right: 20),
         padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
         decoration: BoxDecoration(
             borderRadius: isSendByMe
                 ? BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23))
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                    bottomLeft: Radius.circular(15))
                 : BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23)),
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                    bottomRight: Radius.circular(15)),
             gradient: LinearGradient(
               colors: isSendByMe
                   ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
