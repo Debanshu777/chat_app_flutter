@@ -8,7 +8,6 @@ import 'package:chat_app_flutter/views/search.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ChatRooms extends StatefulWidget {
   @override

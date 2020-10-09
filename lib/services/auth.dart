@@ -1,8 +1,10 @@
 import 'package:chat_app_flutter/modal/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   UserProfile _userFromFirebaseUser(User user) {
     return user != null ? UserProfile(userId: user.uid) : null;
   }
@@ -13,7 +15,11 @@ class AuthMethods {
           email: email, password: password);
       User firebaseUser = result.user;
       return _userFromFirebaseUser(firebaseUser);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+      );
       print(e.toString());
     }
   }
@@ -24,7 +30,11 @@ class AuthMethods {
           email: email, password: password);
       User firebaseUser = result.user;
       return _userFromFirebaseUser(firebaseUser);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+      );
       print(e.toString());
     }
   }
@@ -33,6 +43,10 @@ class AuthMethods {
     try {
       return await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+      );
       print(e.toString());
     }
   }
@@ -41,6 +55,10 @@ class AuthMethods {
     try {
       return await _auth.signOut();
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+      );
       print(e.toString());
     }
   }

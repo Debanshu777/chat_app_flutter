@@ -44,6 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   Widget SearchTile({String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -85,12 +86,12 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget searchList() {
     return searchSnapshort != null
         ? ListView.builder(
-            itemCount: searchSnapshort.documents.length,
+            itemCount: searchSnapshort.docs.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return SearchTile(
-                userName: searchSnapshort.documents[index].data()["name"],
-                userEmail: searchSnapshort.documents[index].data()["email"],
+                userName: searchSnapshort.docs[index].data()["name"],
+                userEmail: searchSnapshort.docs[index].data()["email"],
               );
             })
         : Container();

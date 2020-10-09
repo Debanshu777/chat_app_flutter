@@ -20,6 +20,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageTextEditingController =
       new TextEditingController();
   Stream<QuerySnapshot> chatMessageStream;
+  // ignore: non_constant_identifier_names
   Widget ChatMessageList() {
     return StreamBuilder(
       stream: chatMessageStream,
@@ -65,6 +66,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_controller.hasClients) {
+      Timer(Duration(milliseconds: 300),
+          () => _controller.jumpTo(_controller.position.maxScrollExtent));
+    }
     return Scaffold(
       appBar: appBarMain(context),
       body: Container(
@@ -90,10 +95,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     Expanded(
                       child: TextField(
                         onTap: () {
-                          Timer(
-                              Duration(milliseconds: 300),
-                              () => _controller.jumpTo(
-                                  _controller.position.maxScrollExtent));
+                          if (_controller.hasClients) {
+                            Timer(
+                                Duration(milliseconds: 300),
+                                () => _controller.jumpTo(
+                                    _controller.position.maxScrollExtent));
+                          }
                         },
                         controller: messageTextEditingController,
                         style: TextStyle(
@@ -111,10 +118,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     GestureDetector(
                       onTap: () {
                         sendMessage();
-                        Timer(
-                            Duration(milliseconds: 500),
-                            () => _controller
-                                .jumpTo(_controller.position.maxScrollExtent));
+                        if (_controller.hasClients) {
+                          Timer(
+                              Duration(milliseconds: 300),
+                              () => _controller.jumpTo(
+                                  _controller.position.maxScrollExtent));
+                        }
                       },
                       child: Container(
                         height: 40,
