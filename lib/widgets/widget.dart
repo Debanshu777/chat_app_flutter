@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 Widget appBarMain(BuildContext context) {
   return AppBar(
     title: Image.asset(
-      "assets/images/logo.png",
+      "assets/images/logo.jpg",
       height: 50,
     ),
   );
 }
 
-InputDecoration textFeildInputDecoration(String hintText) {
+InputDecoration textFieldInputDecoration(String hintText) {
   return InputDecoration(
-    hintText: hintText,
-    hintStyle: TextStyle(
+    labelText: hintText,
+    labelStyle: TextStyle(
       color: Colors.white54,
     ),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.white),
+      borderSide: BorderSide(color: Colors.black),
     ),
     enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.white),
+      borderSide: BorderSide(color: Colors.black),
     ),
   );
 }
@@ -27,7 +27,7 @@ InputDecoration textFeildInputDecoration(String hintText) {
 TextStyle simpleTextStyle() {
   return TextStyle(
     color: Colors.white,
-    fontSize: 16,
+    fontSize: 18,
   );
 }
 

@@ -50,7 +50,6 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
       body: isLoading
           ? Container(
               child: Center(child: CircularProgressIndicator()),
@@ -77,7 +76,7 @@ class _SignUpState extends State<SignUp> {
                                 controller: usernameTextEditingController,
                                 style: simpleTextStyle(),
                                 decoration:
-                                    textFeildInputDecoration("Username")),
+                                    textFieldInputDecoration("Username")),
                             TextFormField(
                                 validator: (val) {
                                   return RegExp(
@@ -88,7 +87,7 @@ class _SignUpState extends State<SignUp> {
                                 },
                                 controller: emailTextEditingController,
                                 style: simpleTextStyle(),
-                                decoration: textFeildInputDecoration("Email")),
+                                decoration: textFieldInputDecoration("Email")),
                             TextFormField(
                                 obscureText: true,
                                 validator: (val) {
@@ -99,7 +98,7 @@ class _SignUpState extends State<SignUp> {
                                 controller: passwordTextEditingController,
                                 style: simpleTextStyle(),
                                 decoration:
-                                    textFeildInputDecoration("Password")),
+                                    textFieldInputDecoration("Password")),
                           ],
                         ),
                       ),

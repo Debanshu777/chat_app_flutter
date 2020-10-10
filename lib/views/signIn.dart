@@ -57,16 +57,26 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height - 50,
-          alignment: Alignment.bottomCenter,
+          height: MediaQuery.of(context).size.height,
+          alignment: Alignment.center,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 30),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               children: [
+                Expanded(
+                  child: Hero(
+                    tag: "logo",
+                    child: Container(
+                      width: 200.0,
+                      height: 200.0,
+                      child: Image.asset("assets/images/logo.jpg"),
+                    ),
+                  ),
+                ),
                 Form(
                   key: formkey,
                   child: Column(
@@ -81,7 +91,7 @@ class _SignInState extends State<SignIn> {
                           },
                           controller: emailTextEditingController,
                           style: simpleTextStyle(),
-                          decoration: textFeildInputDecoration("Email")),
+                          decoration: textFieldInputDecoration("Email")),
                       TextFormField(
                           obscureText: true,
                           validator: (val) {
@@ -91,7 +101,7 @@ class _SignInState extends State<SignIn> {
                           },
                           controller: passwordTextEditingController,
                           style: simpleTextStyle(),
-                          decoration: textFeildInputDecoration("Password")),
+                          decoration: textFieldInputDecoration("Password")),
                     ],
                   ),
                 ),
