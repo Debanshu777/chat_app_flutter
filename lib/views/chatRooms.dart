@@ -61,7 +61,7 @@ class _ChatRoomsState extends State<ChatRooms> {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
-          "assets/images/logo.png",
+          "assets/images/logo.jpg",
           height: 50,
         ),
         actions: [

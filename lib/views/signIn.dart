@@ -5,6 +5,7 @@ import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../helper/helperfunctions.dart';
 
@@ -28,6 +29,7 @@ class _SignInState extends State<SignIn> {
 
   signIn() {
     if (formkey.currentState.validate()) {
+      showAlertDialog(context, "Authenticating..");
       HelperFunctions.saveuserEmailSharedPreference(
           emailTextEditingController.text);
       databaseMethods
@@ -87,11 +89,14 @@ class _SignInState extends State<SignIn> {
                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(val)
                                 ? null
-                                : "Please Provide vaild email";
+                                : "Please provide valid email";
                           },
                           controller: emailTextEditingController,
                           style: simpleTextStyle(),
                           decoration: textFieldInputDecoration("Email")),
+                      SizedBox(
+                        height: 20,
+                      ),
                       TextFormField(
                           obscureText: true,
                           validator: (val) {
@@ -111,10 +116,14 @@ class _SignInState extends State<SignIn> {
                 Container(
                   alignment: Alignment.topRight,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     child: Text(
-                      "Forgot Password",
-                      style: simpleTextStyle(),
+                      "Forgot Password ?",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ),
@@ -128,36 +137,88 @@ class _SignInState extends State<SignIn> {
                   child: Container(
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
                         gradient: LinearGradient(colors: [
                           const Color(0xff007EF4),
                           const Color(0xff2A75BC),
                         ]),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text("Sign In", style: mediumTextStyle()),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text("Log In", style: mediumTextStyle()),
                   ),
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 30,
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    "Sign In with Google",
+                Row(children: <Widget>[
+                  Expanded(
+                      child: Divider(
+                    color: Colors.white70,
+                  )),
+                  Text(
+                    "OR",
                     style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 17,
+                      color: Colors.white70,
+                      fontSize: 12,
                     ),
                   ),
+                  Expanded(
+                      child: Divider(
+                    color: Colors.white70,
+                  )),
+                ]),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          authMethods.signInWithGoogle();
+                        },
+                        child: Hero(
+                          tag: "icon",
+                          child: Container(
+                            width: 25.0,
+                            height: 25.0,
+                            child: Image.asset("assets/images/google_logo.jpg"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Fluttertoast.showToast(
+                            msg: "No available",
+                            toastLength: Toast.LENGTH_SHORT,
+                          );
+                        },
+                        child: Hero(
+                          tag: "icons",
+                          child: Container(
+                            width: 25.0,
+                            height: 25.0,
+                            child:
+                                Image.asset("assets/images/facebook-logo.jpg"),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 30,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -181,9 +242,6 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                   ],
-                ),
-                SizedBox(
-                  height: 50,
                 ),
               ],
             ),

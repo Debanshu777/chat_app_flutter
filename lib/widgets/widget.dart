@@ -9,18 +9,35 @@ Widget appBarMain(BuildContext context) {
   );
 }
 
+showAlertDialog(BuildContext context, String text) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 5), child: Text(text)),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 InputDecoration textFieldInputDecoration(String hintText) {
   return InputDecoration(
     labelText: hintText,
     labelStyle: TextStyle(
       color: Colors.white54,
     ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.black),
-    ),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.black),
-    ),
+    border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white54)),
+    enabledBorder:
+        OutlineInputBorder(borderSide: BorderSide(color: Colors.white54)),
+    focusedBorder:
+        OutlineInputBorder(borderSide: BorderSide(color: Colors.white54)),
   );
 }
 
@@ -33,7 +50,7 @@ TextStyle simpleTextStyle() {
 
 TextStyle mediumTextStyle() {
   return TextStyle(
-    color: Colors.white,
+    color: Colors.white70,
     fontSize: 17,
   );
 }

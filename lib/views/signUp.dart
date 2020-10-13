@@ -4,6 +4,7 @@ import 'package:chat_app_flutter/services/database.dart';
 import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUp extends StatefulWidget {
   final Function toggle;
@@ -56,10 +57,10 @@ class _SignUpState extends State<SignUp> {
             )
           : SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height - 50,
+                height: MediaQuery.of(context).size.height,
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 30),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -68,26 +69,33 @@ class _SignUpState extends State<SignUp> {
                         child: Column(
                           children: [
                             TextFormField(
-                                validator: (val) {
-                                  return val.isEmpty || val.length < 4
-                                      ? "Please Provide valid Username"
-                                      : null;
-                                },
-                                controller: usernameTextEditingController,
-                                style: simpleTextStyle(),
-                                decoration:
-                                    textFieldInputDecoration("Username")),
+                              validator: (val) {
+                                return val.isEmpty || val.length < 4
+                                    ? "Please Provide valid Username"
+                                    : null;
+                              },
+                              controller: usernameTextEditingController,
+                              style: simpleTextStyle(),
+                              decoration: textFieldInputDecoration("Username"),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             TextFormField(
-                                validator: (val) {
-                                  return RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                          .hasMatch(val)
-                                      ? null
-                                      : "Please Provide vaild email";
-                                },
-                                controller: emailTextEditingController,
-                                style: simpleTextStyle(),
-                                decoration: textFieldInputDecoration("Email")),
+                              validator: (val) {
+                                return RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(val)
+                                    ? null
+                                    : "Please Provide vaild email";
+                              },
+                              controller: emailTextEditingController,
+                              style: simpleTextStyle(),
+                              decoration: textFieldInputDecoration("Email"),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             TextFormField(
                                 obscureText: true,
                                 validator: (val) {
@@ -103,21 +111,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Text(
-                            "Forgot Password",
-                            style: simpleTextStyle(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
+                        height: 20,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -126,36 +120,18 @@ class _SignUpState extends State<SignUp> {
                         child: Container(
                           alignment: Alignment.center,
                           width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.symmetric(vertical: 20),
+                          padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
                               gradient: LinearGradient(colors: [
                                 const Color(0xff007EF4),
                                 const Color(0xff2A75BC),
                               ]),
-                              borderRadius: BorderRadius.circular(20)),
+                              borderRadius: BorderRadius.circular(5)),
                           child: Text("Sign Up", style: mediumTextStyle()),
                         ),
                       ),
                       SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          "Sign Up with Google",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
+                        height: 50,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -170,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 8),
-                              child: Text("Sign In Now",
+                              child: Text("Log In Now",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
@@ -179,9 +155,6 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                         ],
-                      ),
-                      SizedBox(
-                        height: 50,
                       ),
                     ],
                   ),
