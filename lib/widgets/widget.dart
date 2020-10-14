@@ -9,6 +9,8 @@ Widget appBarMain(BuildContext context) {
   );
 }
 
+BottomNavigationBar bottomNavigationBar(int _pageIndex, Function onTabTapped) {}
+
 showAlertDialog(BuildContext context, String text) {
   AlertDialog alert = AlertDialog(
     content: new Row(

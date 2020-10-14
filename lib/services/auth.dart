@@ -25,7 +25,7 @@ class AuthMethods {
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
@@ -40,7 +40,15 @@ class AuthMethods {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    UserCredential result =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    return result;
+  }
+
+  Future getCurrentUser() async {
+    User _user = _auth.currentUser;
+    print("User: ${_user.displayName ?? "None"}");
+    return _user;
   }
 
   Future signUpWithEmailAndPassword(String email, String password) async {

@@ -1,5 +1,6 @@
 import 'package:chat_app_flutter/services/auth.dart';
 import 'package:chat_app_flutter/services/database.dart';
+import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +28,27 @@ class _SignInState extends State<SignIn> {
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
 
+  void signInWithGoogle() {
+    showAlertDialog(context, "Authenticating..");
+    authMethods.signInWithGoogle().then((value) {
+      Navigator.pop(context);
+      if (value != null) {
+        HelperFunctions.saveuserLoggedInSharedPreference(true);
+        Map<String, String> userInfoMap = {
+          "name": value.user.displayName,
+          "email": value.user.email,
+        };
+        HelperFunctions.saveuserNameSharedPreference(value.user.displayName);
+        HelperFunctions.saveuserEmailSharedPreference(value.user.email);
+        if (value.additionalUserInfo.isNewUser) {
+          databaseMethods.uploadUserInfo(userInfoMap);
+        }
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => BaseView()));
+      }
+    });
+  }
+
   signIn() {
     if (formkey.currentState.validate()) {
       showAlertDialog(context, "Authenticating..");
@@ -47,10 +69,11 @@ class _SignInState extends State<SignIn> {
           .signInWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((value) {
+        Navigator.pop(context);
         if (value != null) {
           HelperFunctions.saveuserLoggedInSharedPreference(true);
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ChatRooms()));
+              context, MaterialPageRoute(builder: (context) => BaseView()));
         }
       });
     }
@@ -180,7 +203,7 @@ class _SignInState extends State<SignIn> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          authMethods.signInWithGoogle();
+                          signInWithGoogle();
                         },
                         child: Hero(
                           tag: "icon",

@@ -1,5 +1,6 @@
 import 'package:chat_app_flutter/helper/autenticate.dart';
 import 'package:chat_app_flutter/helper/helperfunctions.dart';
+import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: userIsLoggedIn != null
-          ? userIsLoggedIn ? ChatRooms() : Authenticate()
+          ? userIsLoggedIn ? BaseView() : Authenticate()
           : Container(
               child: Center(
                 child: Authenticate(),

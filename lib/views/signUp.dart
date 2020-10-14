@@ -1,6 +1,7 @@
 import 'file:///C:/Users/KIIT/chat_app_flutter/lib/helper/helperfunctions.dart';
 import 'package:chat_app_flutter/services/auth.dart';
 import 'package:chat_app_flutter/services/database.dart';
+import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _SignUpState extends State<SignUp> {
       databaseMethods.uploadUserInfo(userInfoMap);
       HelperFunctions.saveuserLoggedInSharedPreference(true);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => ChatRooms()));
+          context, MaterialPageRoute(builder: (context) => BaseView()));
     }
   }
 
