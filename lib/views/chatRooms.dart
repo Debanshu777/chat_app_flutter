@@ -1,4 +1,3 @@
-import 'package:chat_app_flutter/helper/autenticate.dart';
 import 'package:chat_app_flutter/helper/constants.dart';
 import 'package:chat_app_flutter/helper/helperfunctions.dart';
 import 'package:chat_app_flutter/services/auth.dart';
@@ -64,19 +63,6 @@ class _ChatRoomsState extends State<ChatRooms> {
           "assets/images/logo.jpg",
           height: 50,
         ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              authMethods.signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Authenticate()));
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Icon(Icons.exit_to_app),
-            ),
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),

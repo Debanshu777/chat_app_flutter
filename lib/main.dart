@@ -1,7 +1,6 @@
 import 'package:chat_app_flutter/helper/autenticate.dart';
 import 'package:chat_app_flutter/helper/helperfunctions.dart';
 import 'package:chat_app_flutter/views/BaseView.dart';
-import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -40,14 +39,16 @@ class _MyAppState extends State<MyApp> {
       title: 'FlutterChat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xff145C9E),
+        primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.black,
-        accentColor: Color(0xff007EF4),
+        accentColor: Colors.black,
         fontFamily: "OverpassRegular",
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: userIsLoggedIn != null
-          ? userIsLoggedIn ? BaseView() : Authenticate()
+          ? userIsLoggedIn
+              ? BaseView()
+              : Authenticate()
           : Container(
               child: Center(
                 child: Authenticate(),

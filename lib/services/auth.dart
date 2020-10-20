@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/helper/helperfunctions.dart';
 import 'package:chat_app_flutter/modal/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -80,6 +81,9 @@ class AuthMethods {
 
   Future signOut() async {
     try {
+      HelperFunctions.saveuserEmailSharedPreference("");
+      HelperFunctions.saveuserNameSharedPreference("");
+      HelperFunctions.saveuserLoggedInSharedPreference(false);
       return await _auth.signOut();
     } catch (e) {
       Fluttertoast.showToast(

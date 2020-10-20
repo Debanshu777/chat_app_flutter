@@ -1,7 +1,6 @@
 import 'package:chat_app_flutter/services/auth.dart';
 import 'package:chat_app_flutter/services/database.dart';
 import 'package:chat_app_flutter/views/BaseView.dart';
-import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -118,7 +117,7 @@ class _SignInState extends State<SignIn> {
                           style: simpleTextStyle(),
                           decoration: textFieldInputDecoration("Email")),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       TextFormField(
                           obscureText: true,
@@ -162,10 +161,7 @@ class _SignInState extends State<SignIn> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          const Color(0xff007EF4),
-                          const Color(0xff2A75BC),
-                        ]),
+                        color: Color(0xff007EF4),
                         borderRadius: BorderRadius.circular(5)),
                     child: Text("Log In", style: mediumTextStyle()),
                   ),
@@ -246,10 +242,11 @@ class _SignInState extends State<SignIn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Don't have a account? ",
-                      style: mediumTextStyle(),
-                    ),
+                    Text("Don't have a account? ",
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        )),
                     GestureDetector(
                       onTap: () {
                         widget.toggle();
@@ -259,7 +256,7 @@ class _SignInState extends State<SignIn> {
                         child: Text("Register Now",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 14,
                               decoration: TextDecoration.underline,
                             )),
                       ),

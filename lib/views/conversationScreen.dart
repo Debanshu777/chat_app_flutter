@@ -71,7 +71,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
           () => _controller.jumpTo(_controller.position.maxScrollExtent));
     }
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        title: Image.asset(
+          "assets/images/logo.jpg",
+          height: 50,
+        ),
+      ),
       body: Container(
         child: Stack(
           children: [
@@ -129,10 +134,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                         height: 40,
                         width: 40,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            const Color(0x36FFFFFF),
-                            const Color(0x0FFFFFFF)
-                          ]),
+                          color: Color(0xff007EF4),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         padding: EdgeInsets.all(12),
@@ -178,11 +180,8 @@ class MessageTile extends StatelessWidget {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                     bottomRight: Radius.circular(15)),
-            gradient: LinearGradient(
-              colors: isSendByMe
-                  ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                  : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
-            )),
+            color:
+                isSendByMe ? const Color(0xff007EF4) : const Color(0x1AFFFFFF)),
         child: Text(message,
             style: TextStyle(
                 color: Colors.white,

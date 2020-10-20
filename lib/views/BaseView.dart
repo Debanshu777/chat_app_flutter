@@ -59,24 +59,32 @@ class _BaseViewState extends State<BaseView> {
         backgroundColor: Colors.black,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: <BottomNavigationBarItem>[
+        items: [
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
               ),
-              title: Text("Home"),
+              title: Text("text"),
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              title: Text("Search"),
+              title: Text("text"),
+              backgroundColor: Colors.black),
+          BottomNavigationBarItem(
+              icon: Container(
+                child: Icon(
+                  Icons.add_a_photo_outlined,
+                ),
+              ),
+              title: Text("text"),
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
-              title: Text("Notification"),
+              title: Text("text"),
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text("Profile"),
+              title: Text("text"),
               backgroundColor: Colors.black),
         ],
       ),
@@ -84,6 +92,7 @@ class _BaseViewState extends State<BaseView> {
         children: tabPages,
         onPageChanged: onPageChanged,
         controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }

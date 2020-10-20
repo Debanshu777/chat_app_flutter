@@ -2,10 +2,8 @@ import 'file:///C:/Users/KIIT/chat_app_flutter/lib/helper/helperfunctions.dart';
 import 'package:chat_app_flutter/services/auth.dart';
 import 'package:chat_app_flutter/services/database.dart';
 import 'package:chat_app_flutter/views/BaseView.dart';
-import 'package:chat_app_flutter/views/chatRooms.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUp extends StatefulWidget {
   final Function toggle;
@@ -80,7 +78,7 @@ class _SignUpState extends State<SignUp> {
                               decoration: textFieldInputDecoration("Username"),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             TextFormField(
                               validator: (val) {
@@ -95,7 +93,7 @@ class _SignUpState extends State<SignUp> {
                               decoration: textFieldInputDecoration("Email"),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             TextFormField(
                                 obscureText: true,
@@ -123,10 +121,7 @@ class _SignUpState extends State<SignUp> {
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                const Color(0xff007EF4),
-                                const Color(0xff2A75BC),
-                              ]),
+                              color: Color(0xff007EF4),
                               borderRadius: BorderRadius.circular(5)),
                           child: Text("Sign Up", style: mediumTextStyle()),
                         ),
@@ -137,10 +132,11 @@ class _SignUpState extends State<SignUp> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "Already have a account? ",
-                            style: mediumTextStyle(),
-                          ),
+                          Text("Already have a account? ",
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              )),
                           GestureDetector(
                             onTap: () {
                               widget.toggle();
@@ -150,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                               child: Text("Log In Now",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 17,
+                                    fontSize: 14,
                                     decoration: TextDecoration.underline,
                                   )),
                             ),

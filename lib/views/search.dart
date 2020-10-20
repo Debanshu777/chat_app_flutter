@@ -146,10 +146,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          const Color(0x36FFFFFF),
-                          const Color(0x0FFFFFFF)
-                        ]),
+                        color: Color(0xff007EF4),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       padding: EdgeInsets.all(12),
