@@ -5,7 +5,7 @@ class DatabaseMethods {
   getUserByUsername(String username) async {
     return await firestore
         .collection("users")
-        .where("name", isEqualTo: username)
+        .where("username", isGreaterThanOrEqualTo: username)
         .get();
   }
 

@@ -5,6 +5,7 @@ import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -40,12 +41,15 @@ class _SearchScreenState extends State<SearchScreen> {
           MaterialPageRoute(
               builder: (context) => ConversationScreen(chatroomId)));
     } else {
+      Fluttertoast.showToast(
+        msg: "You can't send message to yourself",
+        toastLength: Toast.LENGTH_SHORT,
+      );
       print("You can't send message to yourself");
     }
   }
 
-  // ignore: non_constant_identifier_names
-  Widget SearchTile({String userName, String userEmail}) {
+  Widget searchTile({String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Row(
@@ -89,8 +93,8 @@ class _SearchScreenState extends State<SearchScreen> {
             itemCount: searchSnapshort.docs.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return SearchTile(
-                userName: searchSnapshort.docs[index].data()["name"],
+              return searchTile(
+                userName: searchSnapshort.docs[index].data()["username"],
                 userEmail: searchSnapshort.docs[index].data()["email"],
               );
             })
@@ -106,15 +110,10 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: appBarMain(context,
+          isAppTitle: false, strTitle: "Search", disappearBackButton: true),
       body: Container(
         child: Column(
           children: [

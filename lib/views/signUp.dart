@@ -1,8 +1,10 @@
 import 'file:///C:/Users/KIIT/chat_app_flutter/lib/helper/helperfunctions.dart';
+import 'package:chat_app_flutter/modal/user.dart';
 import 'package:chat_app_flutter/services/auth.dart';
 import 'package:chat_app_flutter/services/database.dart';
 import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -13,6 +15,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController displayNameTextEditingController =
+      new TextEditingController();
   TextEditingController usernameTextEditingController =
       new TextEditingController();
   TextEditingController emailTextEditingController =
@@ -24,12 +28,8 @@ class _SignUpState extends State<SignUp> {
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
   bool isLoading = false;
-  signMeUp() {
+  signMeUp() async {
     if (formkey.currentState.validate()) {
-      Map<String, String> userInfoMap = {
-        "name": usernameTextEditingController.text,
-        "email": emailTextEditingController.text,
-      };
       HelperFunctions.saveuserNameSharedPreference(
           usernameTextEditingController.text);
       HelperFunctions.saveuserEmailSharedPreference(
@@ -37,9 +37,16 @@ class _SignUpState extends State<SignUp> {
       setState(() {
         isLoading = true;
       });
-      authMethods.signUpWithEmailAndPassword(
+      UserProfile user = await authMethods.signUpWithEmailAndPassword(
           emailTextEditingController.text, passwordTextEditingController.text);
-
+      Map<String, String> userInfoMap = {
+        "userId": user.userId,
+        "displayName": displayNameTextEditingController.text,
+        "username": usernameTextEditingController.text,
+        "url": "",
+        "email": emailTextEditingController.text,
+        "bio": "",
+      };
       databaseMethods.uploadUserInfo(userInfoMap);
       HelperFunctions.saveuserLoggedInSharedPreference(true);
       Navigator.pushReplacement(
@@ -67,6 +74,19 @@ class _SignUpState extends State<SignUp> {
                         key: formkey,
                         child: Column(
                           children: [
+                            TextFormField(
+                              validator: (val) {
+                                return val.isEmpty || val.length < 4
+                                    ? "Please Provide valid Display name"
+                                    : null;
+                              },
+                              controller: displayNameTextEditingController,
+                              style: simpleTextStyle(),
+                              decoration: textFieldInputDecoration("Full name"),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             TextFormField(
                               validator: (val) {
                                 return val.isEmpty || val.length < 4

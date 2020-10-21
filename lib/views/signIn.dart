@@ -34,8 +34,12 @@ class _SignInState extends State<SignIn> {
       if (value != null) {
         HelperFunctions.saveuserLoggedInSharedPreference(true);
         Map<String, String> userInfoMap = {
-          "name": value.user.displayName,
+          "userId": value.user.uid,
+          "displayName": value.user.displayName,
+          "username": value.user.displayName,
+          "url": value.user.photoURL,
           "email": value.user.email,
+          "bio": "",
         };
         HelperFunctions.saveuserNameSharedPreference(value.user.displayName);
         HelperFunctions.saveuserEmailSharedPreference(value.user.email);
@@ -58,7 +62,7 @@ class _SignInState extends State<SignIn> {
           .then((val) {
         snapshotUserInfo = val;
         HelperFunctions.saveuserNameSharedPreference(
-            snapshotUserInfo.docs[0].data()["name"]);
+            snapshotUserInfo.docs[0].data()["username"]);
       });
       setState(() {
         isLoading = true;
