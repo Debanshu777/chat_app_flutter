@@ -32,16 +32,30 @@ class _ExploreViewState extends State<ExploreView> {
               return searchTile(
                 userName: searchSnapshort.docs[index].data()["username"],
                 userEmail: searchSnapshort.docs[index].data()["email"],
+                image_url: searchSnapshort.docs[index].data()["url"],
               );
             })
         : Container();
   }
 
-  Widget searchTile({String userName, String userEmail}) {
+  Widget searchTile({String userName, String userEmail, String image_url}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Row(
         children: [
+          CircleAvatar(
+            radius: 20.0,
+            backgroundImage: AssetImage("assets/images/profile_default.png"),
+            backgroundColor: Colors.transparent,
+            child: CircleAvatar(
+              radius: 20.0,
+              backgroundImage: NetworkImage(image_url),
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -70,7 +84,7 @@ class _ExploreViewState extends State<ExploreView> {
           children: [
             Container(
               color: Color(0x54FFFFFF),
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               child: Row(
                 children: [
                   Expanded(
@@ -80,15 +94,22 @@ class _ExploreViewState extends State<ExploreView> {
                         color: Colors.white54,
                       ),
                       decoration: InputDecoration(
-                        prefix: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Icon(Icons.search),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.white54,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.white54,
+                          ),
+                          onPressed: () {
+                            searchTextEditingController.clear();
+                          },
                         ),
                         border: InputBorder.none,
                         hintText: "Search Username",
-                        hintStyle: TextStyle(
-                          color: Colors.white54,
-                        ),
+                        hintStyle: TextStyle(color: Colors.white54),
                       ),
                     ),
                   ),
