@@ -55,16 +55,6 @@ class _ExploreViewState extends State<ExploreView> {
               )
             ],
           ),
-          Spacer(),
-          // Container(
-          //   decoration: BoxDecoration(
-          //       color: Colors.blue, borderRadius: BorderRadius.circular(30)),
-          //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          //   child: Text(
-          //     "Message",
-          //     style: simpleTextStyle(),
-          //   ),
-          // )
         ],
       ),
     );
@@ -80,7 +70,7 @@ class _ExploreViewState extends State<ExploreView> {
           children: [
             Container(
               color: Color(0x54FFFFFF),
-              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
               child: Row(
                 children: [
                   Expanded(
@@ -90,6 +80,10 @@ class _ExploreViewState extends State<ExploreView> {
                         color: Colors.white54,
                       ),
                       decoration: InputDecoration(
+                        prefix: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Icon(Icons.search),
+                        ),
                         border: InputBorder.none,
                         hintText: "Search Username",
                         hintStyle: TextStyle(
@@ -98,25 +92,20 @@ class _ExploreViewState extends State<ExploreView> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      initiateSearch();
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xff007EF4),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding: EdgeInsets.all(12),
-                      child: Image.asset("assets/images/search_white.png"),
-                    ),
-                  ),
                 ],
               ),
             ),
-            searchList(),
+            StreamBuilder(
+              stream: (searchTextEditingController.text != "" ||
+                      searchTextEditingController.text != null)
+                  ? initiateSearch()
+                  : Container(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                return (snapshot.connectionState == ConnectionState.waiting)
+                    ? Center(child: CircularProgressIndicator())
+                    : searchList();
+              },
+            ),
           ],
         ),
       ),
