@@ -1,6 +1,7 @@
 import 'package:chat_app_flutter/views/fragments/ExploreView.dart';
 import 'package:chat_app_flutter/views/fragments/FeedView.dart';
 import 'package:chat_app_flutter/views/fragments/ProfileView.dart';
+import 'package:chat_app_flutter/views/fragments/UploadView.dart';
 
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class _BaseViewState extends State<BaseView> {
   List<Widget> tabPages = [
     FeedView(),
     ExploreView(),
+    //UploadView(),
     NotificationView(),
     ProfileView()
   ];
@@ -39,6 +41,10 @@ class _BaseViewState extends State<BaseView> {
   @override
   Widget build(BuildContext context) {
     void onTabTapped(int index) {
+      if (index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UploadView()));
+      }
       this._pageController.animateToPage(index,
           duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     }
