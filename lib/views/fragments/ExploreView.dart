@@ -32,13 +32,13 @@ class _ExploreViewState extends State<ExploreView> {
               return searchTile(
                 userName: searchSnapshort.docs[index].data()["username"],
                 userEmail: searchSnapshort.docs[index].data()["email"],
-                image_url: searchSnapshort.docs[index].data()["url"],
+                imageUrl: searchSnapshort.docs[index].data()["url"],
               );
             })
         : Container();
   }
 
-  Widget searchTile({String userName, String userEmail, String image_url}) {
+  Widget searchTile({String userName, String userEmail, String imageUrl}) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Row(
@@ -49,7 +49,7 @@ class _ExploreViewState extends State<ExploreView> {
             backgroundColor: Colors.transparent,
             child: CircleAvatar(
               radius: 20.0,
-              backgroundImage: NetworkImage(image_url),
+              backgroundImage: NetworkImage(imageUrl),
               backgroundColor: Colors.transparent,
             ),
           ),

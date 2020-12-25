@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:chat_app_flutter/helper/constants.dart';
 import 'package:chat_app_flutter/services/database.dart';
-import 'package:chat_app_flutter/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

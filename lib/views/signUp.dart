@@ -1,10 +1,9 @@
-import 'file:///C:/Users/KIIT/chat_app_flutter/lib/helper/helperfunctions.dart';
+import 'package:chat_app_flutter/helper/helperfunctions.dart';
 import 'package:chat_app_flutter/modal/user.dart';
 import 'package:chat_app_flutter/services/auth.dart';
 import 'package:chat_app_flutter/services/database.dart';
 import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:chat_app_flutter/widgets/widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {

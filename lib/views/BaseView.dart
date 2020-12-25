@@ -2,7 +2,6 @@ import 'package:chat_app_flutter/views/fragments/AlterUploadView.dart';
 import 'package:chat_app_flutter/views/fragments/ExploreView.dart';
 import 'package:chat_app_flutter/views/fragments/FeedView.dart';
 import 'package:chat_app_flutter/views/fragments/ProfileView.dart';
-import 'package:chat_app_flutter/views/fragments/UploadView.dart';
 
 import 'package:flutter/material.dart';
 
@@ -71,11 +70,11 @@ class _BaseViewState extends State<BaseView> {
               icon: Icon(
                 Icons.home,
               ),
-              title: Text("text"),
+              label: "Home",
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              title: Text("text"),
+              label: "Search",
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Container(
@@ -83,15 +82,15 @@ class _BaseViewState extends State<BaseView> {
                   Icons.add_a_photo_outlined,
                 ),
               ),
-              title: Text("text"),
+              label: "Photos",
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
-              title: Text("text"),
+              label: "Notification",
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text("text"),
+              label: "Profile",
               backgroundColor: Colors.black),
         ],
       ),

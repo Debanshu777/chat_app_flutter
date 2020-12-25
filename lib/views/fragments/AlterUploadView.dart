@@ -33,46 +33,7 @@ class _AlterUploadViewState extends State<AlterUploadView> {
     });
   }
 
-  takeImage(mContext) {
-    return showDialog(
-        context: mContext,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text(
-              "New Post",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            children: <Widget>[
-              SimpleDialogOption(
-                child: Text(
-                  "Open Camera",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: captureImagesWithCamera(),
-              ),
-              SimpleDialogOption(
-                child: Text(
-                  "Open Gallery",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: pickImageFromGallery(),
-              ),
-              SimpleDialogOption(
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
-  }
-
-  displayScreen() {
+  Widget displayScreen() {
     return Container(
       color: Theme.of(context).accentColor.withOpacity(0.5),
       child: Column(
@@ -86,15 +47,52 @@ class _AlterUploadViewState extends State<AlterUploadView> {
           Padding(
             padding: EdgeInsets.only(top: 20),
             child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9.0)),
-              child: Text(
-                "Upload Image",
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
-              ),
-              color: Colors.green,
-              onPressed: () => takeImage(context),
-            ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9.0)),
+                child: Text(
+                  "Upload Image",
+                  style: TextStyle(color: Colors.white, fontSize: 20.0),
+                ),
+                color: Colors.green,
+                onPressed: () {
+                  return showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          title: Text(
+                            "New Post",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          children: <Widget>[
+                            SimpleDialogOption(
+                              child: Text(
+                                "Open Camera",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              onPressed: () => captureImagesWithCamera(),
+                            ),
+                            SimpleDialogOption(
+                              child: Text(
+                                "Open Gallery",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              onPressed: () => pickImageFromGallery(),
+                            ),
+                            SimpleDialogOption(
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                }),
           )
         ],
       ),
