@@ -1,10 +1,11 @@
-import 'dart:collection';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:image_gallery/image_gallery.dart';
+import 'package:photo_manager/photo_manager.dart';
+import 'package:video_player/video_player.dart';
 
 class UploadView extends StatefulWidget {
   @override
@@ -12,26 +13,28 @@ class UploadView extends StatefulWidget {
 }
 
 class _UploadViewState extends State<UploadView> {
-  ScrollController _scrollController = new ScrollController();
-  Map<dynamic, dynamic> allImageTemp = new HashMap();
-  List allImage = new List();
-  List allNameList = new List();
-  List pageImage = new List();
-  String url;
-  int end = 10, start = 1;
-  bool isLoading = false;
-
+  List<AssetEntity> assets = [];
+  Future<File> setFile;
   @override
   void initState() {
+    _fetchAssets();
     super.initState();
-    loadImageList();
   }
 
-  Future<void> loadImageList() async {
-    allImageTemp = await FlutterGallaryPlugin.getAllImages;
-    setState(() {
-      url = (allImageTemp['URIList'] as List)[0];
-    });
+  _fetchAssets() async {
+    // Set onlyAll to true, to fetch only the 'Recent' album
+    // which contains all the photos/videos in the storage
+    final albums = await PhotoManager.getAssetPathList(onlyAll: true);
+    final recentAlbum = albums.first;
+
+    // Now that we got the album, fetch all the assets it contains
+    final recentAssets = await recentAlbum.getAssetListRange(
+      start: 0, // start at index 0
+      end: 1000000, // end at a very big index (to get all the assets)
+    );
+
+    // Update the state and notify UI
+    setState(() => assets = recentAssets);
   }
 
   @override
@@ -72,44 +75,197 @@ class _UploadViewState extends State<UploadView> {
         ),
         backgroundColor: Theme.of(context).accentColor,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 2,
-              child: Image.file(
-                File(url.toString()),
-                fit: BoxFit.fill,
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height / 3,
+              child: setFile != null
+                  ? FutureBuilder<File>(
+                      future: setFile,
+                      builder: (_, snapshot) {
+                        final file = snapshot.data;
+                        if (file == null) return Container();
+                        return Image.file(file);
+                      },
+                    )
+                  : FutureBuilder<File>(
+                      future: assets[0].file,
+                      builder: (_, snapshot) {
+                        final file = snapshot.data;
+                        if (file == null) return Container();
+                        return Image.file(file);
+                      },
+                    ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10.0),
-              child: StaggeredGridView.countBuilder(
-                controller: _scrollController,
-                crossAxisCount: 3,
-                itemCount: (allImageTemp['URIList'] as List).length,
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      url = (allImageTemp['URIList'] as List)[index];
-                    });
-                  },
-                  child: Image.file(
-                    File((allImageTemp['URIList'] as List)[index].toString()),
-                    fit: BoxFit.cover,
+          ),
+          Expanded(
+            child: StaggeredGridView.countBuilder(
+              crossAxisCount: 3,
+              itemCount: assets.length,
+              itemBuilder: (_, index) {
+                return fun(assets[index]);
+              },
+              staggeredTileBuilder: (index) => StaggeredTile.count(
+                  (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget fun(asset) {
+    // We're using a FutureBuilder since thumbData is a future
+    return FutureBuilder<Uint8List>(
+      future: asset.thumbData,
+      builder: (_, snapshot) {
+        final bytes = snapshot.data;
+        // If we have no data, display a spinner
+        if (bytes == null) return CircularProgressIndicator();
+        // If there's data, display it as an image
+        return InkWell(
+          onLongPress: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) {
+                  if (asset.type == AssetType.image) {
+                    // If this is an image, navigate to ImageScreen
+                    return ImageScreen(imageFile: asset.file);
+                  } else {
+                    // if it's not, navigate to VideoScreen
+                    return VideoScreen(videoFile: asset.file);
+                  }
+                },
+              ),
+            );
+          },
+          onTap: () {
+            setState(() {
+              setFile = asset.file;
+            });
+          },
+          child: Stack(
+            children: [
+              // Wrap the image in a Positioned.fill to fill the space
+              Positioned.fill(
+                child: Image.memory(bytes, fit: BoxFit.cover),
+              ),
+              // Display a Play icon if the asset is a video
+              if (asset.type == AssetType.video)
+                Center(
+                  child: Container(
+                    color: Colors.blue,
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-                staggeredTileBuilder: (index) => StaggeredTile.count(
-                    (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ImageScreen extends StatelessWidget {
+  const ImageScreen({
+    Key key,
+    @required this.imageFile,
+  }) : super(key: key);
+
+  final Future<File> imageFile;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<File>(
+      future: imageFile,
+      builder: (_, snapshot) {
+        final file = snapshot.data;
+        if (file == null) return Container();
+        return Image.file(file);
+      },
+    );
+  }
+}
+
+class VideoScreen extends StatefulWidget {
+  const VideoScreen({
+    Key key,
+    @required this.videoFile,
+  }) : super(key: key);
+
+  final Future<File> videoFile;
+
+  @override
+  _VideoScreenState createState() => _VideoScreenState();
+}
+
+class _VideoScreenState extends State<VideoScreen> {
+  VideoPlayerController _controller;
+  bool initialized = false;
+
+  @override
+  void initState() {
+    _initVideo();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  _initVideo() async {
+    final video = await widget.videoFile;
+    _controller = VideoPlayerController.file(video)
+      // Play the video again when it ends
+      ..setLooping(true)
+      // initialize the controller and notify UI when done
+      ..initialize().then((_) => setState(() => initialized = true));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: initialized
+          // If the video is initialized, display it
+          ? Scaffold(
+              body: Center(
+                child: AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  // Use the VideoPlayer widget to display the video.
+                  child: VideoPlayer(_controller),
+                ),
               ),
-              height: MediaQuery.of(context).size.height / 2,
-            ),
-          ],
-        ),
-      ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  // Wrap the play or pause in a call to `setState`. This ensures the
+                  // correct icon is shown.
+                  setState(() {
+                    // If the video is playing, pause it.
+                    if (_controller.value.isPlaying) {
+                      _controller.pause();
+                    } else {
+                      // If the video is paused, play it.
+                      _controller.play();
+                    }
+                  });
+                },
+                // Display the correct icon depending on the state of the player.
+                child: Icon(
+                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                ),
+              ),
+            )
+          // If the video is not yet initialized, display a spinner
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
