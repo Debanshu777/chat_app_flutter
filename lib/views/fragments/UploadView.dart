@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:chat_app_flutter/views/BaseView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
@@ -15,6 +16,9 @@ class UploadView extends StatefulWidget {
 class _UploadViewState extends State<UploadView> {
   List<AssetEntity> assets = [];
   Future<File> setFile;
+  File fileUpload;
+  final picker = ImagePicker();
+
   @override
   void initState() {
     _fetchAssets();
@@ -35,6 +39,22 @@ class _UploadViewState extends State<UploadView> {
 
     // Update the state and notify UI
     setState(() => assets = recentAssets);
+  }
+
+  Future captureImagesWithCamera() async {
+    Navigator.pop(context);
+    final pickedFile = await picker.getImage(
+      source: ImageSource.camera,
+      maxHeight: 680,
+      maxWidth: 970,
+    );
+    setState(() {
+      if (pickedFile != null) {
+        this.fileUpload = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 
   @override
@@ -79,25 +99,18 @@ class _UploadViewState extends State<UploadView> {
         children: [
           Expanded(
             child: Container(
-              height: MediaQuery.of(context).size.height / 3,
-              child: setFile != null
-                  ? FutureBuilder<File>(
-                      future: setFile,
-                      builder: (_, snapshot) {
-                        final file = snapshot.data;
-                        if (file == null) return Container();
-                        return Image.file(file);
-                      },
-                    )
-                  : FutureBuilder<File>(
-                      future: assets[0].file,
-                      builder: (_, snapshot) {
-                        final file = snapshot.data;
-                        if (file == null) return Container();
-                        return Image.file(file);
-                      },
-                    ),
-            ),
+                height: MediaQuery.of(context).size.height / 3,
+                child: setFile != null
+                    ? FutureBuilder<File>(
+                        future: setFile,
+                        builder: (_, snapshot) {
+                          final file = snapshot.data;
+                          if (file == null) return Container();
+                          fileUpload = file;
+                          return Image.file(file);
+                        },
+                      )
+                    : Placeholder()),
           ),
           Expanded(
             child: StaggeredGridView.countBuilder(
@@ -113,6 +126,13 @@ class _UploadViewState extends State<UploadView> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          captureImagesWithCamera();
+        },
+        backgroundColor: Theme.of(context).accentColor,
+        child: Icon(Icons.camera),
       ),
     );
   }
