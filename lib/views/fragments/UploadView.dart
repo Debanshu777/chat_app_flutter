@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chat_app_flutter/views/BaseView.dart';
+import 'package:chat_app_flutter/views/EditPageBeforeUpload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +18,7 @@ class _UploadViewState extends State<UploadView> {
   List<AssetEntity> assets = [];
   Future<File> setFile;
   File fileUpload;
+
   final picker = ImagePicker();
 
   @override
@@ -51,9 +53,16 @@ class _UploadViewState extends State<UploadView> {
     setState(() {
       if (pickedFile != null) {
         this.fileUpload = File(pickedFile.path);
+        print(fileUpload.path);
       } else {
         print('No image selected.');
       }
+    });
+  }
+
+  reload(file) {
+    setState(() {
+      fileUpload = file;
     });
   }
 
@@ -73,16 +82,26 @@ class _UploadViewState extends State<UploadView> {
         ),
         automaticallyImplyLeading: true,
         actions: [
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              "Next",
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 17,
+          GestureDetector(
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                "Next",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 17,
+                ),
               ),
             ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditPageBeforeUpload(
+                            fileUpload: fileUpload,
+                          )));
+            },
           )
         ],
         title: Text(
@@ -98,20 +117,20 @@ class _UploadViewState extends State<UploadView> {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-                height: MediaQuery.of(context).size.height / 3,
-                child: setFile != null
-                    ? FutureBuilder<File>(
-                        future: setFile,
-                        builder: (_, snapshot) {
-                          final file = snapshot.data;
-                          if (file == null) return Container();
-                          fileUpload = file;
-                          return Image.file(file);
-                        },
-                      )
-                    : Placeholder()),
-          ),
+              child: Container(
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: setFile != null
+                      ? FutureBuilder<File>(
+                          future: setFile,
+                          builder: (_, snapshot) {
+                            final file = snapshot.data;
+                            if (file == null) return Container();
+                            reload(file);
+                            print(fileUpload.path);
+                            return Image.file(file);
+                          },
+                        )
+                      : Placeholder())),
           Expanded(
             child: StaggeredGridView.countBuilder(
               crossAxisCount: 3,
@@ -130,6 +149,12 @@ class _UploadViewState extends State<UploadView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           captureImagesWithCamera();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditPageBeforeUpload(
+                        fileUpload: fileUpload,
+                      )));
         },
         backgroundColor: Theme.of(context).accentColor,
         child: Icon(Icons.camera),
@@ -166,6 +191,7 @@ class _UploadViewState extends State<UploadView> {
           onTap: () {
             setState(() {
               setFile = asset.file;
+              fileUpload = asset.file;
             });
           },
           child: Stack(

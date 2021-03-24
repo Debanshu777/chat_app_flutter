@@ -21,15 +21,15 @@ Widget chatRoomList() {
     builder: (context, snapshot) {
       return snapshot.hasData
           ? ListView.builder(
-              itemCount: snapshot.data.documents.length,
+              itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 return ChatRoomTile(
-                    snapshot.data.documents[index]
+                    snapshot.data.docs[index]
                         .data()["chatroomId"]
                         .toString()
                         .replaceAll("_", "")
                         .replaceAll(Constants.myName, ""),
-                    snapshot.data.documents[index].data()["chatroomId"]);
+                    snapshot.data.docs[index].data()["chatroomId"]);
               },
             )
           : Container();

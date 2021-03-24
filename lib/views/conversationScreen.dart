@@ -28,11 +28,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
             ? ListView.builder(
                 controller: _controller,
                 physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: snapshot.data.documents.length,
+                itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   return MessageTile(
-                      snapshot.data.documents[index].data()["message"],
-                      snapshot.data.documents[index].data()["sendBy"] ==
+                      snapshot.data.docs[index].data()["message"],
+                      snapshot.data.docs[index].data()["sendBy"] ==
                           Constants.myName);
                 },
               )
